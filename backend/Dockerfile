@@ -2,23 +2,24 @@
 FROM python:3.10-slim
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Set working directory
 WORKDIR /app
 
-# Copy dependencies file
+# Copy requirements and install dependencies
 COPY requirements.txt .
-
-# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all application files including question folder
+# Copy backend source code
 COPY . .
 
-# Expose FastAPI default port
+# Copy frontend files from build context root (requires correct build context)
+COPY ../frontend ./frontend
+
+# Expose port
 EXPOSE 8000
 
-# Start FastAPI app
+# Start FastAPI server
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
