@@ -5,7 +5,7 @@ WORKDIR /app
 # Copy backend code
 COPY backend/ .
 
-# Copy frontend directories into /app/frontend/
+# Copy frontend (static and templates) into container
 COPY frontend/ frontend/
 
 # Install dependencies
