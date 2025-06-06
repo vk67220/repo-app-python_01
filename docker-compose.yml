@@ -11,20 +11,20 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - kastro-net
 
   backend:
     build:
-      context: ./backend
+      context: .             # Root context, where Dockerfile is
     container_name: kastro-backend
     ports:
       - "8000:8000"
     depends_on:
       - mysql
     environment:
-      DB_HOST: mysql        # hostname to connect to MySQL container
+      DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: kastro_exam_db
       DB_USER: root
