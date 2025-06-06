@@ -5,21 +5,24 @@ FROM python:3.10-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Set working directory
+# Set working directory inside container
 WORKDIR /app
 
 # Copy requirements and install dependencies
-COPY requirements.txt .
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy backend source code
-COPY . .
+# Copy Python source files
+COPY backend/*.py .
 
-# Copy frontend files from build context root (requires correct build context)
-COPY ../frontend ./frontend
+# Copy question JSON files folder
+COPY backend/question ./question
 
-# Expose port
+# Copy database folder if needed
+COPY backend/database ./database
+
+# Expose the port your FastAPI app will run on
 EXPOSE 8000
 
-# Start FastAPI server
+# Command to run the app using uvicorn
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
